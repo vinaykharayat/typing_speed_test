@@ -7,6 +7,7 @@ const theTimer = document.querySelector(".timer");
 var timer = [0,0,0,0];
 var interval;
 var timerRunning = false;
+var totalErrors = 0;
 // Add leading zero to numbers 9 or below (purely for aesthetics):
 function leadingZero(time){
     if(time<=9){
@@ -18,7 +19,6 @@ function leadingZero(time){
 function runTimer(){
     let currentTime = leadingZero(timer[0]) + ":" + leadingZero(timer[1]) + ":" + leadingZero(timer[2]);
     theTimer.innerHTML = currentTime;
-    console.log(timer[3]++);
     
     //Minutes
     timer[0] = Math.floor((timer[3]/100)/60);
@@ -41,6 +41,7 @@ function spellCheck(){
     }else if(textEntered == originTextMatch){
         testWrapper.style.borderColor = "blue";
     }else{
+        totalErrors++;
         testWrapper.style.borderColor = "orange";
     }
 }
@@ -48,9 +49,15 @@ function spellCheck(){
 //Function to check wpm
 function checkWpm(textEntered){
     let wordsArray = textEntered.split(" ");
-    // let wpm = wordsArray.length/((timer[0] * 60) + timer[1]);
     let wpm = (wordsArray.length/5)/(timer[0] + (timer[1]/60));
     document.querySelector(".wpm").textContent = wpm;
+    checkError(wordsArray);
+}
+
+function checkError(totalWords){
+    let error = totalWords.length*(totalErrors/100);
+    console.log(error);
+    document.querySelector(".error_per").textContent = error;
 }
 
 
