@@ -36,12 +36,23 @@ function spellCheck(){
     if(textEntered == originText){
         clearInterval(interval);
         testWrapper.style.borderColor = "green";
+        
+        checkWpm(textEntered);
     }else if(textEntered == originTextMatch){
         testWrapper.style.borderColor = "blue";
     }else{
         testWrapper.style.borderColor = "orange";
     }
 }
+
+//Function to check wpm
+function checkWpm(textEntered){
+    let wordsArray = textEntered.split(" ");
+    // let wpm = wordsArray.length/((timer[0] * 60) + timer[1]);
+    let wpm = (wordsArray.length/5)/(timer[0] + (timer[1]/60));
+    document.querySelector(".wpm").textContent = wpm;
+}
+
 
 // Start the timer:
 function start(){
