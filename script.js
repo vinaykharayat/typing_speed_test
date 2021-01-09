@@ -13,11 +13,11 @@ var paragraphArray = [
 ]
 
 var refParagraphList = document.querySelectorAll("#list_of_text option");
-for(var i = 0; i<refParagraphList.length; i++){
+for (var i = 0; i < refParagraphList.length; i++) {
     refParagraphList[i].textContent = paragraphArray[i];
 }
 
-document.querySelector("#list_of_text").addEventListener("click", function(){
+document.querySelector("#list_of_text").addEventListener("click", function () {
     originText.textContent = "No paragraph selected"
     originText.textContent = paragraphArray[document.querySelector("#list_of_text").value];
 })
@@ -25,83 +25,79 @@ document.querySelector("#list_of_text").addEventListener("click", function(){
 
 
 document.querySelector("#origin-text p").innerHTML = originText.textContent;
-// console.log(originText);
-var timer = [0,0,0,0];
+var timer = [0, 0, 0, 0];
 var interval;
 var timerRunning = false;
 var totalErrors = 0;
 // Add leading zero to numbers 9 or below (purely for aesthetics):
-function leadingZero(time){
-    if(time<=9){
+function leadingZero(time) {
+    if (time <= 9) {
         return "0" + time;
     }
     return time;
 }
 // Run a standard minute/second/hundredths timer:
-function runTimer(){
+function runTimer() {
     let currentTime = leadingZero(timer[0]) + ":" + leadingZero(timer[1]) + ":" + leadingZero(timer[2]);
     theTimer.innerHTML = currentTime;
     timer[3]++;
     //Minutes
-    timer[0] = Math.floor((timer[3]/100)/60);
+    timer[0] = Math.floor((timer[3] / 100) / 60);
     //Seconds 
-    timer[1] = Math.floor((timer[3]/100) - (timer[0] *60));
+    timer[1] = Math.floor((timer[3] / 100) - (timer[0] * 60));
 
     //MS "-timer[0] * 6000" is used to reset ms to 0 after one minute.
-     timer[2] = Math.floor(timer[3] - (timer[1] * 100) - (timer[0] * 6000));
+    timer[2] = Math.floor(timer[3] - (timer[1] * 100) - (timer[0] * 6000));
 }
 
 // Match the text entered with the provided text on the page:
-function spellCheck(){
+function spellCheck() {
     let textEntered = testArea.value;
-    let originTextMatch = originText.textContent.substring(0,textEntered.length);
-    if(textEntered == originText.textContent){
+    let originTextMatch = originText.textContent.substring(0, textEntered.length);
+    if (textEntered == originText.textContent) {
         clearInterval(interval);
         testWrapper.style.borderColor = "green";
-        
+
         checkWpm(textEntered);
-    }else if(textEntered == originTextMatch){
+    } else if (textEntered == originTextMatch) {
         testWrapper.style.borderColor = "blue";
-    }else{
+    } else {
         totalErrors++;
         testWrapper.style.borderColor = "orange";
     }
 }
 
 //Function to check wpm
-function checkWpm(textEntered){
+function checkWpm(textEntered) {
     let wordsArray = textEntered.split(" ");
-    let wpm = (wordsArray.length/5)/(timer[0] + (timer[1]/60));
+    let wpm = (wordsArray.length / 5) / (timer[0] + (timer[1] / 60));
     document.querySelector(".wpm").textContent = wpm.toFixed(2);
     checkError(wordsArray);
 }
 
-function checkError(totalWords){
-    let error = (totalErrors/totalWords.length)*100;
-    console.log(error);
-    console.log(totalWords.length);
-    console.log(totalErrors);
+function checkError(totalWords) {
+    let error = (totalErrors / totalWords.length) * 100;
     document.querySelector(".error_per").textContent = error.toFixed(2);
 }
 
 
 // Start the timer:
-function start(){
+function start() {
     let textEnteredLength = testArea.value.length;
-    if(textEnteredLength === 0 && !timerRunning){
+    if (textEnteredLength === 0 && !timerRunning) {
         timerRunning = true;
         interval = setInterval(runTimer, 10);
     }
 }
 
 // Reset everything:
-function reset(){
+function reset() {
     clearInterval(interval);
     interval = null;
-    timer = [0,0,0,0];
+    timer = [0, 0, 0, 0];
     timerRunning = false;
     testArea.value = "";
-    theTimer.innerHTML ="00:00:00";
+    theTimer.innerHTML = "00:00:00";
     testWrapper.style.borderColor = "grey";
 }
 
