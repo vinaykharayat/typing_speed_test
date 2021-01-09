@@ -19,7 +19,7 @@ function leadingZero(time){
 function runTimer(){
     let currentTime = leadingZero(timer[0]) + ":" + leadingZero(timer[1]) + ":" + leadingZero(timer[2]);
     theTimer.innerHTML = currentTime;
-    
+    timer[3]++;
     //Minutes
     timer[0] = Math.floor((timer[3]/100)/60);
     //Seconds 
@@ -50,14 +50,16 @@ function spellCheck(){
 function checkWpm(textEntered){
     let wordsArray = textEntered.split(" ");
     let wpm = (wordsArray.length/5)/(timer[0] + (timer[1]/60));
-    document.querySelector(".wpm").textContent = wpm;
+    document.querySelector(".wpm").textContent = wpm.toFixed(2);
     checkError(wordsArray);
 }
 
 function checkError(totalWords){
-    let error = totalWords.length*(totalErrors/100);
+    let error = (totalErrors/totalWords.length)*100;
     console.log(error);
-    document.querySelector(".error_per").textContent = error;
+    console.log(totalWords.length);
+    console.log(totalErrors);
+    document.querySelector(".error_per").textContent = error.toFixed(2);
 }
 
 
